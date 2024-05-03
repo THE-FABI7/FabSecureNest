@@ -1,0 +1,175 @@
+#!/bin/bash
+
+# Colores
+RED='\033[1;31m'   # Rojo brillante
+GREEN='\033[1;32m' # Verde brillante
+NO_COLOR='\033[0m' # Sin color, para restablecer al color por defecto
+
+# Nueva arte ASCII de una calavera en color rojo
+print_ascii_skull() {
+    echo -e "${RED}"
+    cat << "EOF"
+                      :::!~!!!!!:.
+                  .xUHWH!! !!?M88WHX:.
+                .X*#M@$!!  !X!M$$$$$$WWx:.
+               :!!!!!!?H! :!$!$$$$$$$$$$8X:
+              !!~  ~:~!! :~!$!#$$$$$$$$$$8X:
+             :!~::!H!<   ~.U$X!?R$$$$$$$$MM!
+             ~!~!!!!~~ .:XW$$$U!!?$$$$$$RMM!
+               !:~~~ .:!M"T#$$$$WX??#MRRMMM!
+               ~?WuxiW*`   `"#$$$$8!!!!??!!!
+             :X- M$$$$       `"T#$T~!8$WUXU~
+            :%`  ~#$$$m:        ~!~ ?$$$$$$
+          :!`.-   ~T$$$$8xx.  .xWW- ~""##*"
+.....   -~~:<` !    ~?T#$$@@W@*?$$      /`
+W$@@M!!! .!~~ !!     .:XUW$W!~ `"~:    :
+#"~~`.:x%`!!  !H:   !WM$$$$Ti.: .!WUn+!`
+:::~:!!`:X~ .: ?H.!u "$$$B$$$!W:U!T$$M~
+.~~   :X@!.-~   ?@WTWo("*$$$W$TH$! `
+Wi.~!X$?!-~    : ?$$$B$Wu("**$RM!
+$R@i.~~ !     :   ~$$$$$B$$en:``
+?MXT@Wx.~    :     ~"##*$$$$M~
+EOF
+    echo -e "${NO_COLOR}"
+}
+
+# Funciones de hacking aquí...
+# Ping Sweep
+function ping_sweep() {
+    echo -e "${GREEN}Realizando Ping Sweep en la red local..."
+    for ip in {1..254}; do
+        ping -c 1 192.168.1.$ip | grep "64 bytes" | cut -d " " -f 4 | tr -d ":" &
+    done
+    wait
+    echo -e "${NO_COLOR}"
+}
+
+# Escaneo de Puertos
+function port_scan() {
+    local host=$1
+    echo -e "${GREEN}Escaneando puertos en el host $host..."
+    for port in {20..80}; do
+        timeout 1 bash -c "echo > /dev/tcp/$host/$port" 2>/dev/null && echo "Puerto $port está abierto"
+    done
+    echo -e "${NO_COLOR}"
+}
+
+# Obtener Cabeceras HTTP
+function http_headers() {
+    local url=$1
+    echo -e "${GREEN}Obteniendo cabeceras HTTP para $url..."
+    curl -I $url
+    echo -e "${NO_COLOR}"
+}
+
+# DNS Lookup
+function dns_lookup() {
+    local domain=$1
+    echo -e "${GREEN}Realizando DNS Lookup para $domain..."
+    dig $domain +short
+    echo -e "${NO_COLOR}"
+}
+
+# Trace Route
+function trace_route() {
+    local target=$1
+    echo -e "${GREEN}Realizando Trace Route a $target..."
+    traceroute $target
+    echo -e "${NO_COLOR}"
+}
+
+function vulnerability_scan() {
+    local host=$1
+    echo -e "${GREEN}Realizando escaneo de vulnerabilidades en $host..."
+    nmap -sV --script=vuln $host
+    echo -e "${NO_COLOR}"
+}
+
+# Enumeración de Subdominios
+function subdomain_enum() {
+    local domain=$1
+    echo -e "${GREEN}Enumerando subdominios para $domain..."
+    for sub in $(cat subdomains.txt); do
+        if host $sub.$domain &> /dev/null; then
+            echo "$sub.$domain encontrado"
+        fi
+    done
+    echo -e "${NO_COLOR}"
+}
+
+# Extracción de Metadatos
+function metadata_extraction() {
+    local file_url=$1
+    echo -e "${GREEN}Extrayendo metadatos del archivo $file_url..."
+    exiftool $file_url
+    echo -e "${NO_COLOR}"
+}
+
+# Reverse Shell
+function reverse_shell() {
+    local listening_port=$1
+    echo -e "${GREEN}Configurando un Reverse Shell a este equipo en el puerto $listening_port..."
+    echo "nc -lvnp $listening_port"
+    echo -e "${NO_COLOR}"
+}
+
+# Simulación de Ataque de Fuerza Bruta
+function brute_force_attack() {
+    local host=$1
+    local user=$2
+    local wordlist=$3
+    local service=$4
+    echo -e "${GREEN}Realizando ataque de fuerza bruta a $service en $host..."
+    hydra -l $user -P $wordlist $host $service
+    echo -e "${NO_COLOR}"
+}
+
+# Menú principal
+function show_menu() {
+    print_ascii_skull
+    echo -e "${GREEN}Seleccione una opción de hacking:\n"
+    echo "1. Ping Sweep"
+    echo "2. Escaneo de Puertos"
+    echo "3. Obtener Cabeceras HTTP"
+    echo "4. DNS Lookup"
+    echo "5. Trace Route"
+    echo "6. Análisis de Vulnerabilidades"
+    echo "7. Enumeración de Subdominios"
+    echo "8. Extracción de Metadatos"
+    echo "9. Configurar Reverse Shell"
+    echo "10. Simulación de Ataque de Fuerza Bruta"
+    echo -e "${NO_COLOR}"
+    echo -e "${RED}Introduce el número de la opción deseada: \c${NO_COLOR}"
+    read option
+    case $option in
+        1) ping_sweep ;;
+        2) echo -e "${GREEN}Introduce una dirección IP: \c${NO_COLOR}"; read ip; port_scan $ip ;;
+        3) echo -e "${GREEN}Introduce una URL: \c${NO_COLOR}"; read url; http_headers $url ;;
+        4) echo -e "${GREEN}Introduce un dominio: \c${NO_COLOR}"; read domain; dns_lookup $domain ;;
+        5) echo -e "${GREEN}Introduce un destino para Trace Route: \c${NO_COLOR}"; read target; trace_route $target ;;
+        6) echo -e "${GREEN}Introduce la dirección IP para el análisis de vulnerabilidades: \c${NO_COLOR}"; read ip; vulnerability_scan $ip ;;
+        7) echo -e "${GREEN}Introduce el dominio para la enumeración de subdominios: \c${NO_COLOR}"; read domain; subdomain_enum $domain ;;
+        8) echo -e "${GREEN}Introduce la URL del archivo para extracción de metadatos: \c${NO_COLOR}"; read file_url; metadata_extraction $file_url ;;
+        9) echo -e "${GREEN}Introduce el puerto de escucha para el Reverse Shell: \c${NO_COLOR}"; read port; reverse_shell $port ;;
+        10) echo -e "${GREEN}Introduce el host, usuario, ruta de la lista de palabras y servicio (ej: ssh): \c${NO_COLOR}";
+            read host user wordlist service;
+            brute_force_attack $host $user $wordlist $service ;;
+        *) echo "${RED}Opción no válida${NO_COLOR}";;
+    esac
+}
+
+# Créditos del desarrollador con estilo y color
+print_credits() {
+    echo -e "${RED}"
+    echo "*********************************************"
+    echo "* Hacked by: The*Fabi 2024 *"
+    echo "*********************************************"
+    echo -e "${NO_COLOR}"
+}
+# Funciones como ping_sweep, port_scan, etc., y menú principal...
+
+# Ejecutar menú
+print_credits
+show_menu
+
+

@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Colores
+RED='\033[1;31m'   # Rojo brillante
+GREEN='\033[1;32m' # Verde brillante
+NO_COLOR='\033[0m' # Sin color, para restablecer al color por defecto
+
+# Arte ASCII de una calavera en color rojo
+print_ascii_skull() {
+    echo -e "${RED}"
+    cat << "EOF"
+      .                                                      .
+        .n                   .                 .                  n.
+  .   .dP                  dP                   9b                 9b.    .
+ 4    qXb         .       dX                     Xb       .        dXp     t
+dX.    9Xb      .dXb    __                         __    dXb.     dXP     .Xb
+9XXb._       _.dXXXXb dXXXXbo.                 .odXXXXb dXXXXb._       _.dXXP
+ 9XXXXXXXXXXXXXXXXXXXVXXXXXXXXOo.           .oOXXXXXXXXVXXXXXXXXXXXXXXXXXXXP
+  `9XXXXXXXXXXXXXXXXXXXXX'~   ~`OOO8b   d8OOO'~   ~`XXXXXXXXXXXXXXXXXXXXXP'
+    `9XXXXXXXXXXXP' `9XX'   DIE    `98v8P'  HUMAN   `XXP' `9XXXXXXXXXXXP'
+        ~~~~~~~       9X.          .db|db.          .XP       ~~~~~~~
+                        )b.  .dbo.dP'`v'`9b.odb.  .dX(
+                      ,dXXXXXXXXXXXb     dXXXXXXXXXXXb.
+                     dXXXXXXXXXXXP'   .    `9XXXXXXXXXXXb
+                    dXXXXXXXXXXXXb   d|b   dXXXXXXXXXXXXb
+                    9XXb'   `XXXXXb.dX|Xb.dXXXXX'   `dXXP
+                     `'      9XXXXXX(   )XXXXXXP      `'
+                              XXXX X.`v'.X XXXX
+                              XP^X'`b   d'`X^XX
+                              X. 9  `   '  P )X
+                              `b  `       '  d'
+EOF
+    echo -e "${NO_COLOR}"
+}
+
+# Función para obtener el nombre y versión del sistema operativo
+get_os_info() {
+    echo -e "${GREEN}Sistema Operativo: $(uname -o)"
+    echo "Versión del Kernel: $(uname -r)${NO_COLOR}"
+}
+
+# Función para obtener el uso de la memoria
+get_memory_usage() {
+    echo -e "${GREEN}Memoria Usada/Libre:"
+    free -h | grep Mem | awk '{print "Usada: " $3 " / Libre: " $4}'
+    echo -e "${NO_COLOR}"
+}
+
+# Mensaje de hacking
+print_hacking_message() {
+    echo -e "${GREEN}Accediendo a sistemas secretos...${NO_COLOR}"
+}
+
+# Información de la CPU
+get_cpu_info() {
+    echo -e "${GREEN}Información de la CPU:"
+    lscpu | grep 'Model name' | awk -F: '{print $2}'
+    echo -e "${NO_COLOR}"
+}
+
+# Información de red
+get_network_info() {
+    echo -e "${GREEN}Información de Red:"
+    echo "IP: $(hostname -I | cut -d' ' -f1)"
+    echo -e "${NO_COLOR}"
+}
+
+# Créditos del desarrollador
+print_credits() {
+    echo -e "${GREEN}Desarrollado por Fabian Dev: Software Engineer 2024${NO_COLOR}"
+    echo -e "${RED} AmericanMafia"
+}
+
+# Mostrar todo
+print_ascii_skull
+print_hacking_message
+get_os_info
+get_memory_usage
+get_cpu_info
+get_network_info
+print_credits
