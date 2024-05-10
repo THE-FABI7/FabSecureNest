@@ -1,3 +1,5 @@
+![image](https://github.com/THE-FABI7/FabSecureNest/assets/80603614/81f36896-9bd3-4933-a2bb-118d03ac520f)
+
 # Herramientas de Hacking en Bash (FABSECURENET)
 
 Este script en Bash ofrece una colección de herramientas para realizar diversas tareas de hacking y pruebas de penetración desde la terminal. Incluye funciones como escaneo de puertos, barrido de ping, obtención de cabeceras HTTP, entre otros.
