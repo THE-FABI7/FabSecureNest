@@ -124,7 +124,25 @@ function brute_force_attack() {
     echo -e "${NO_COLOR}"
 }
 
-# Menú principal
+# Escaneo de Dispositivos Bluetooth utilizando bluetoothctl con tiempo configurable
+function scan_bluetooth_devices() {
+    local scan_time=$1
+    echo -e "${GREEN}Escaneando dispositivos Bluetooth cercanos durante $scan_time segundos..."
+    
+    # Iniciar bluetoothctl en modo interactivo
+    echo "scan on" | bluetoothctl &
+    sleep $scan_time
+    echo "scan off" | bluetoothctl
+    
+    # Mostrar dispositivos encontrados
+    echo -e "${GREEN}Dispositivos encontrados:${NO_COLOR}"
+    bluetoothctl devices
+    
+    echo -e "${NO_COLOR}"
+}
+
+
+# Menú principal actualizado con la opción de escanear dispositivos Bluetooth
 function show_menu() {
     print_ascii_skull
     echo -e "${GREEN}Seleccione una opción de hacking:\n"
@@ -138,6 +156,8 @@ function show_menu() {
     echo "8. Extracción de Metadatos"
     echo "9. Configurar Reverse Shell"
     echo "10. Simulación de Ataque de Fuerza Bruta"
+    echo "11. Escanear Dispositivos Bluetooth"
+    echo "12. Denegación de Servicio en Bluetooth"
     echo -e "${NO_COLOR}"
     echo -e "${RED}Introduce el número de la opción deseada: \c${NO_COLOR}"
     read option
@@ -154,6 +174,8 @@ function show_menu() {
         10) echo -e "${GREEN}Introduce el host, usuario, ruta de la lista de palabras y servicio (ej: ssh): \c${NO_COLOR}";
             read host user wordlist service;
             brute_force_attack $host $user $wordlist $service ;;
+        11) echo -e "${GREEN}Introduce el tiempo de escaneo en segundos: \c${NO_COLOR}"; read scan_time; scan_bluetooth_devices $scan_time ;;
+        12) echo -e "${GREEN}Introduce la MAC del dispositivo Bluetooth: \c${NO_COLOR}"; read target_mac; bluetooth_dos $target_mac ;;
         *) echo "${RED}Opción no válida${NO_COLOR}";;
     esac
 }
