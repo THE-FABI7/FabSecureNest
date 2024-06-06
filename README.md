@@ -18,6 +18,7 @@ El script incluye las siguientes funcionalidades:
 - **Extracción de Metadatos**: Extrae metadatos de archivos utilizando ExifTool.
 - **Configurar Reverse Shell**: Prepara un reverse shell para escuchar en un puerto específico.
 - **Simulación de Ataque de Fuerza Bruta**: Realiza un ataque de fuerza bruta utilizando Hydra.
+- **Denegacion de servicios bluetooth**: Realiza un ataque de denegacion de servicios a otros dispositivos bluetooth 
 
 ## Uso
 
